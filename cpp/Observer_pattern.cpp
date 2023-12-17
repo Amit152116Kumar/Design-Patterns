@@ -4,20 +4,23 @@
 #include<windows.h>
 using namespace std;
 
+/*  Observer Pattern
+    Definition: The Observer Pattern defines a one-to-many dependency between objects so that when one object
+        changes state, all of its dependents are notified and updated automatically.
+
+    Note:
+
+*/
+
 // --------------------------------------------Weather Dataclass ------------------------------------
 typedef struct WeatherData{
     float tempertature;
     float humidity;
     float pressure;
-    WeatherData(float temperature,float humidity,float pressure){
+    WeatherData(float temperature=0,float humidity=0,float pressure=0){
         this->tempertature = temperature;
         this->humidity = humidity;
         this->pressure = pressure;
-    }
-    WeatherData(){
-        this->tempertature = 0;
-        this->pressure = 0;
-        this->humidity = 0;
     }
 } WeatherData;
 
@@ -42,7 +45,7 @@ public:
     ~Subject(){};
     virtual void registerObserver(Observer* o){};
     virtual void removeObserver(Observer* o){};
-    virtual void notifyObserver()=0;
+    virtual void notifyObserver() const=0;
 };
 
 
@@ -72,7 +75,7 @@ public:
             }
         }
     }
-    void notifyObserver() override{
+    void notifyObserver() const override{
         for ( auto it :observers){
             it->update(data);
         }

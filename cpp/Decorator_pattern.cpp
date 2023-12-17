@@ -4,15 +4,15 @@
 
 using namespace std;
 
-// Design Principle : Classes should be open for extensionbut closed for modification.
+// Design Principle : Classes should be open for extension but closed for modification.
 
 /* Decorator Pattern
     Definition: The Decorator Pattern attaches additional responsibilities to an object dynamically.
         Decorators provide a flexible alternative to subclassing for extending functionality.
 
-    Note: If you hae code that relies on the concrete component's typedecorator will break that code.
-        As long as you only write code againt the abstract component typethe use of decorators will remain
-        transparent to the client. Howeveronce you start writing code against the concrete component type,
+    Note: If you have code that relies on the concrete component's type, decorator will break that code.
+        As long as you only write code againt the abstract component type, the use of decorators will remain
+        transparent to the client. How ever once you start writing code against the concrete component type,
         you'll want to rethink your application's design.
 */
 
@@ -22,36 +22,37 @@ protected:
     string description;
     double cost;
 public:
-    virtual string getDescription(){
+    Coffee(string description,double cost){
+        this->description = description;
+        this->cost = cost;
+    };
+
+    virtual string getDescription()const{
         return description;
     }
-    virtual double getCost(){
+    virtual double getCost()const{
         return cost;
     }
     virtual ~Coffee(){};
 };
 
 // --------------------------------------------Coffee Concrete Classes-------------------------------------
+
+// Espresso
 class Espresso:public Coffee{
 public:
-    Espresso(){
-        description = "Espresso";
-        cost = 1.99;
-    }
+    Espresso():Coffee("Espresso",1.99){};
 };
+
+// HouseBlend
 class HouseBlend:public Coffee{
 public:
-    HouseBlend(){
-        description = "House Blend Coffee";
-        cost = 0.89;
-    }
+    HouseBlend():Coffee("House Blend Coffee",0.89){};
 };
+// Dark Roast
 class DarkRoast:public Coffee{
 public:
-    DarkRoast(){
-        description = "Dark Roast Coffee";
-        cost = 0.99;
-    }
+    DarkRoast():Coffee("Dark Roast Coffee",0.99){};
 };
 
 
@@ -60,11 +61,13 @@ class CoffeeDecorator:public Coffee{
 protected:
     Coffee *coffee;
 public:
-
-    string getDescription() override {
+    CoffeeDecorator(Coffee* coffee,string description,double cost):Coffee(description,cost){
+        this->coffee = coffee;
+    }
+    string getDescription() const override {
         return coffee->getDescription() +" "+ description;
     }
-    double getCost() override {
+    double getCost() const override {
         return coffee->getCost() + cost;
     }
 };
@@ -73,41 +76,22 @@ public:
 // --------------------------------------------Coffee Decorator Concrete Classes-------------------------------------
 class Mocha:public CoffeeDecorator{
 public:
-    Mocha(Coffee *coffee){
-        this->coffee = coffee;
-        description = "Mocha";
-        cost = 0.20;
-    }
+    Mocha(Coffee *coffee):CoffeeDecorator(coffee,"Mocha",0.20){};
 };
 
 class Whip:public CoffeeDecorator{
 public:
-    Whip(Coffee *coffee){
-        this->coffee = coffee;
-        description = "Whip";
-        cost = 0.10;
-    }
-    
+    Whip(Coffee *coffee):CoffeeDecorator(coffee,"Whip",0.10){};
 };
 
 class Soy:public CoffeeDecorator{
 public:
-    Soy(Coffee *coffee){
-        this->coffee = coffee;
-        description = "Soy";
-        cost = 0.15;
-    }
-    
+    Soy(Coffee *coffee):CoffeeDecorator(coffee,"Soy",0.15){};    
 };
 
 class SteamedMilk:public CoffeeDecorator{
 public:
-    SteamedMilk(Coffee *coffee){
-        this->coffee = coffee;
-        description = "Steamed Milk";
-        cost = 0.10;
-    }
-   
+    SteamedMilk(Coffee *coffee):CoffeeDecorator(coffee,"Steamed Milk",0.10){};
 };
 
 int main(){
