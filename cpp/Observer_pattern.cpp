@@ -1,7 +1,6 @@
 #include<iostream>
 #include<string>
 #include<vector>
-#include<windows.h>
 using namespace std;
 
 /*  Observer Pattern
@@ -149,12 +148,10 @@ int main(){
 
     weatherReporter->setData(10,20,30);
     weatherReporter->registerObserver(forecastWeatherDisplay);
-    Sleep(5000); // Sleep for 5 seconds
     weatherReporter->setData(20,30,40);
 
     weatherReporter->removeObserver(currentWeatherDisplay);
 
-    Sleep(5000); // Sleep for 5 seconds
     weatherReporter->setData(30,40,50);
     return 0;
 }
